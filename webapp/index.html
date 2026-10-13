@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>Фатин квест</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=__V__">
+</head>
+<body>
+<div id="app">
+
+  <div class="bg-orbs"><i></i><i></i><i></i></div>
+  <div id="floaters"></div>
+
+  <!-- 0. загрузка -->
+  <section class="screen active" id="s-loading">
+    <div class="loader"><div class="loader-heart">🫀</div><p>Моем руки…</p></div>
+  </section>
+
+  <!-- 1. старт -->
+  <section class="screen" id="s-splash">
+    <div class="center-col">
+      <div class="badge">🩺 Квест · сезон «Медицина»</div>
+      <svg class="ecg" viewBox="0 0 600 120" preserveAspectRatio="none">
+        <path d="M0 60 H120 L135 60 L145 40 L155 60 L170 60 L180 70 L195 8 L210 112 L222 60 L250 60 L262 48 L278 60 H360 L375 60 L385 40 L395 60 L410 60 L420 70 L435 8 L450 112 L462 60 L490 60 L502 48 L518 60 H600"/>
+      </svg>
+      <div class="glass">
+        <p class="lead">Фатя, нам в очередной раз придется почелленджить твои медицинские навыки!</p>
+        <p class="lead big">Ты готова?</p>
+      </div>
+      <button class="btn-main pulse" data-act="ready">ГОТОВА</button>
+      <p class="tiny">🔊 включи звук — будет интереснее</p>
+    </div>
+  </section>
+
+  <!-- 2. интро -->
+  <section class="screen" id="s-intro2">
+    <div class="center-col">
+      <div class="badge">Этап 1 из 4 · Хирургия</div>
+      <div class="big-emoji wobble">🔪</div>
+      <div class="glass">
+        <p class="lead">Сначала посмотрим на твои навыки точности и хирургии.</p>
+      </div>
+      <button class="btn-main pulse" data-act="go">ПОГНАЛИ</button>
+    </div>
+  </section>
+
+  <!-- 3. knife hit -->
+  <section class="screen" id="s-knife">
+    <canvas id="knife-canvas"></canvas>
+    <div class="k-top">
+      <div class="k-levels">
+        <div class="k-lv" data-lv="0"><span>🩸</span></div><b></b>
+        <div class="k-lv" data-lv="1"><span>🟢</span></div><b></b>
+        <div class="k-lv" data-lv="2"><span>⚫</span></div>
+      </div>
+      <div class="k-name"></div>
+    </div>
+    <div class="k-count"></div>
+    <div class="k-toast"></div>
+    <div class="k-card hidden">
+      <div class="k-card-inner glass">
+        <div class="k-card-ico"></div>
+        <h2></h2>
+        <p></p>
+        <button class="btn-main small"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3б. фармакология -->
+  <section class="screen" id="s-abintro">
+    <div class="center-col">
+      <div class="badge">Этап 2 из 4 · Фармакология</div>
+      <div class="big-emoji wobble">💊</div>
+      <div class="glass">
+        <p class="lead">Руки хирурга подтверждены! 🔪✅</p>
+        <p class="lead">Теперь фармакология. В чашке Петри — микробное ассорти, и только ты решаешь, кому достанется антибиотик.</p>
+      </div>
+      <button class="btn-main pulse" data-act="abgo">Назначить антибиотик</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-ab">
+    <canvas id="ab-canvas"></canvas>
+    <div class="ab-top">
+      <div class="ab-title">💊 Амоксиклав 875/125</div>
+      <div class="ab-row"><div class="ab-bar"><i></i></div><span class="ab-count">0/30</span><span class="ab-lives"></span></div>
+    </div>
+    <div class="k-toast"></div>
+    <div class="k-card hidden">
+      <div class="k-card-inner glass">
+        <div class="k-card-ico"></div>
+        <h2></h2>
+        <p></p>
+        <button class="btn-main small"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3в. реанимация -->
+  <section class="screen" id="s-cprintro">
+    <div class="center-col">
+      <div class="badge">Этап 3 из 4 · Реанимация</div>
+      <div class="big-emoji siren">🚨</div>
+      <div class="glass">
+        <p class="lead">Инфекция побеждена, но в коридоре пациенту стало плохо!</p>
+        <p class="lead">Сознания нет, пульса нет. Говорят, его жена снова воспользовалась куском хозяйственного мыла 🧼</p>
+        <p class="sub">Помнишь ритм «Stayin' Alive»? 🕺</p>
+      </div>
+      <button class="btn-main pulse" data-act="cprgo">Бегу на помощь!</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-cpr">
+    <canvas id="cpr-canvas"></canvas>
+    <button class="cpr-btn hidden"></button>
+    <div class="k-toast"></div>
+    <div class="k-card hidden">
+      <div class="k-card-inner glass">
+        <div class="k-card-ico"></div>
+        <h2></h2>
+        <p></p>
+        <button class="btn-main small"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. переход к УЗИ -->
+  <section class="screen" id="s-usintro">
+    <div class="center-col">
+      <div class="badge">Этап 4 из 4 · УЗИ-диагностика</div>
+      <div class="big-emoji">🧠✅</div>
+      <div class="glass">
+        <p class="lead">Общие знания проверены.</p>
+        <p class="lead">А сможешь ли ты показать навыки <b class="hl">УЗИ</b>?</p>
+        <p class="sub">Выбери орган, который будешь исследовать первым. Затем будешь исследовать второй.</p>
+        <p class="sub">⚠️ Шарик трекбола пыльный, поэтому его надо гонять рукой со всего размаха 🖐</p>
+      </div>
+      <button class="btn-main pulse" data-act="usok">Пффф, без проблем</button>
+    </div>
+  </section>
+
+  <!-- 5. выбор комнаты -->
+  <section class="screen" id="s-pick">
+    <div class="pick-col">
+      <h2 class="pick-title">Выбери орган для исследования</h2>
+      <button class="room-card" data-room="1"><img src="img/room1.jpg" alt=""><span>Орган №1</span></button>
+      <button class="room-card" data-room="2"><img src="img/room2.jpg" alt=""><span>Орган №2</span></button>
+    </div>
+  </section>
+
+  <!-- 6. УЗИ -->
+  <section class="screen" id="s-scan">
+    <div class="scan-view">
+      <canvas id="scan-canvas"></canvas>
+      <div class="scan-banner hidden"></div>
+    </div>
+    <div class="console">
+      <div class="c-row">
+        <div class="tb-wrap">
+          <canvas class="trackball"></canvas>
+          <span class="lbl">ДАТЧИК</span>
+        </div>
+        <div class="knob-wrap">
+          <div class="knob-ticks"></div>
+          <div class="knob"><div class="knob-cap"><i class="knob-mark"></i></div></div>
+          <span class="lbl">УГОЛ</span>
+        </div>
+        <div class="ind-col">
+          <div class="vu"><canvas class="vu-c"></canvas></div>
+          <div class="led-row"><span class="led"></span><span class="lbl">ЛОКАЦИЯ</span></div>
+        </div>
+      </div>
+      <div class="c-row c-row2">
+        <div class="tgc-sw">
+          <span class="lbl tgc-title">TGC</span>
+          <div class="tgc-track"><i></i><i></i><i></i><div class="tgc-cap"></div></div>
+          <div class="tgc-lbls"><span data-tgc="0" class="on">Дальний</span><span data-tgc="1">Средний</span><span data-tgc="2">Сильный</span></div>
+        </div>
+        <button class="press-btn"><span>ПРИЖАТЬ</span><small>держи</small></button>
+      </div>
+    </div>
+    <div class="scan-popup hidden">
+      <div class="glass popup-inner">
+        <div class="popup-ico">🔎</div>
+        <p>Подбирай угол датчика УЗИ и води им по комнате, чтобы найти область интереса. Когда найдешь — приблизь TGC до среднего и ищи дальше. Когда найдешь — приблизь до сильного и ищи дальше.</p>
+        <ul class="hints">
+          <li>🕹 <b>Трекбол</b> двигает датчик (он пыльный — гоняй со всего размаха 🖐), <b>ручка УГОЛ</b> поворачивает луч</li>
+          <li>💡 Лампа <b>ЛОКАЦИЯ</b> мигает тем чаще, чем ближе нужное место. Загорелась зелёным — ты на месте</li>
+          <li>🎚 Стрелка <b>УГОЛ</b> говорит правду только рядом с целью. У каждой области свой угол</li>
+          <li>✋ Нашла — зажми <b>ПРИЖАТЬ</b>. Если давишь мимо, пациент ойкнет</li>
+          <li>🟨 Верно — область обведётся жёлтой рамкой <b>ROI</b>. Тогда приближай TGC</li>
+        </ul>
+        <button class="btn-main small" data-act="scanok">OK</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. найдено -->
+  <section class="screen" id="s-found1">
+    <div class="center-col">
+      <div class="glass">
+        <p class="lead big">Поздравляю! Ты нашла сердечки!</p>
+      </div>
+      <div class="hearts-panel"></div>
+      <button class="btn-main" data-act="nextroom">к следующей комнате</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-found2">
+    <div class="center-col">
+      <div class="glass">
+        <p class="lead big">Поздравляю! Ты нашла белые носочки!</p>
+      </div>
+      <div class="socks-panel">
+        <svg viewBox="0 0 200 140" class="socks">
+          <g class="sock s1"><path d="M40 10h34v62c0 6 3 10 9 13l26 14c10 6 12 18 4 26-6 6-14 7-21 3L44 104C34 98 30 90 30 78V10z"/><rect x="38" y="10" width="38" height="12" rx="3" class="cuff"/></g>
+          <g class="sock s2"><path d="M110 18h34v62c0 6 3 10 9 13l26 14c10 6 12 18 4 26-6 6-14 7-21 3l-38-22c-10-6-14-14-14-26V18z"/><rect x="108" y="18" width="38" height="12" rx="3" class="cuff"/></g>
+        </svg>
+      </div>
+      <button class="btn-main" data-act="whatnext">и что дальше?</button>
+    </div>
+  </section>
+
+  <!-- 8. финал -->
+  <section class="screen" id="s-final">
+    <div class="center-col">
+      <div class="big-emoji">🧔‍⚕️</div>
+      <div class="glass">
+        <p class="lead">Подойди к бородатому главврачу и скажи кодовую фразу:</p>
+        <p class="lead big hl">«сердечки и носочки»</p>
+        <p class="lead">— он выдаст тебе премию.</p>
+      </div>
+      <button class="btn-main" data-act="restart">поняла, хочу пройти все заново</button>
+    </div>
+  </section>
+
+  <canvas id="fx"></canvas>
+  <div id="zoomer"></div>
+  <div id="fade"></div>
+  <button id="mute" aria-label="звук">🔊</button>
+</div>
+
+<script src="audio.js?v=__V__"></script>
+<script src="knife.js?v=__V__"></script>
+<script src="scan.js?v=__V__"></script>
+<script src="ab.js?v=__V__"></script>
+<script src="cpr.js?v=__V__"></script>
+<script src="app.js?v=__V__"></script>
+</body>
+</html>
